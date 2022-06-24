@@ -1,0 +1,60 @@
+version: '3.9'
+
+volumes:
+    generated_files: ~
+    data_storage: ~
+
+services:
+    mysql:
+        image: mysql:8.0.29-oracle
+        container_name: m2i_app_mysql
+        volumes:
+            - data_storage:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+        ports:
+            - "3306:3306"
+
+    php:
+        build: .docker/php
+        container_name: m2i_app_php
+        volumes:
+            - ${SYMFONY_APP}:${WORKDIR}
+            - generated_files:${WORKDIR}/var/cache
+            - ${SYMFONY_APP}/vendor:${WORKDIR}/vendor:delegated
+        working_dir: ${WORKDIR}
+        depends_on:
+            - mysql
+        environment:
+            - NODEJS_VERSION=${NODEJS_VERSION}
+
+    nginx:
+        container_name: m2i_app_nginx
+        build: .docker/nginx
+        volumes:
+            - ${SYMFONY_APP}:${WORKDIR}
+            - ${NGINX_LOGS}:/var/log/nginx/
+        environment:
+            - WORKDIR=${WORKDIR}
+        ports:
+            - "80:80"
+            - "443:443"
+        depends_on:
+            - php
+        networks:
+            default:
+                aliases:
+                    - 'm-2i-tech.academy'
+
+    phpmyadmin:
+        container_name: m2i_app_pma
+        image: phpmyadmin:latest
+        environment:
+            - PMA_HOST=mysql
+            - PMA_USER=${MYSQL_USER}
+            - PMA_PASSWORD=${MYSQL_PASSWORD}
+        ports:
+            - "8080:80"

@@ -7,7 +7,7 @@ volumes:
 services:
     mysql:
         image: mysql:8.0.29-oracle
-        container_name: m2i_app_mysql
+        container_name: m2i_correction_mysql
         volumes:
             - data_storage:/var/lib/mysql
         environment:
@@ -16,11 +16,15 @@ services:
             MYSQL_USER: ${MYSQL_USER}
             MYSQL_DATABASE: ${MYSQL_DATABASE}
         ports:
-            - "3306:3306"
+            - "3307:3307"
+        networks:
+            default:
+                aliases:
+                    - 'mysql.m-2i-correction.academy'
 
     php:
         build: .docker/php
-        container_name: m2i_app_php
+        container_name: m2i_correction_php
         volumes:
             - ${SYMFONY_APP}:${WORKDIR}
             - generated_files:${WORKDIR}/var/cache
@@ -28,15 +32,22 @@ services:
         working_dir: ${WORKDIR}
         depends_on:
             - mysql
+
+    symfony:
+        container_name: m2i_correction_sf
+        build: .docker/symfony-cli
+        working_dir: ${WORKDIR}
+        volumes:
+            - ${SYMFONY_APP}:${WORKDIR}
         environment:
             - NODEJS_VERSION=${NODEJS_VERSION}
 
     nginx:
-        container_name: m2i_app_nginx
+        container_name: m2i_correction_nginx
         build: .docker/nginx
         volumes:
             - ${SYMFONY_APP}:${WORKDIR}
-            - ${NGINX_LOGS}:/var/log/nginx/
+            - ./logs/nginx/:/var/log/nginx
         environment:
             - WORKDIR=${WORKDIR}
         ports:
@@ -47,14 +58,14 @@ services:
         networks:
             default:
                 aliases:
-                    - 'm-2i-tech.academy'
+                    - 'm-2i-correction.academy'
 
     phpmyadmin:
-        container_name: m2i_app_pma
+        container_name: m2i_correction_pma
         image: phpmyadmin:latest
         environment:
             - PMA_HOST=mysql
             - PMA_USER=${MYSQL_USER}
             - PMA_PASSWORD=${MYSQL_PASSWORD}
         ports:
-            - "8080:80"
+            - "8082:80"

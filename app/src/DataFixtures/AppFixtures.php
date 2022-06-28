@@ -2,6 +2,8 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Categories;
+use App\Entity\Product;
 use App\Entity\User;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -45,5 +47,26 @@ class AppFixtures extends Fixture
 
         $manager->persist($user);
         $manager->flush();
+
+        //categories
+        $category = new Categories();
+        $category->setName('bonnet');
+
+        $manager->persist($category);
+        $manager->flush();
+
+        //Products
+        $product = new Product();
+        $product->setName('Bonnets tricoté pour femmes');
+        $product->setDescription('Bonnets tricoté pour femmes, Bonnet de marque, épais et chaud, tête de mort en tricot, lettre, Bonnet, ensembles d\'équitation en plein air');
+        $product->setPrice('12');
+        $product->setIsBestSeller(true);
+        $product->setIsFeatured(false);
+        $product->setIsSpecialOffer(false);
+        $product->setQuantity(10);
+
+        $manager->persist($product);
+        $manager->flush($product);
+
     }
 }

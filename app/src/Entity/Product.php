@@ -39,7 +39,7 @@ class Product
     #[ORM\Column(type: 'boolean', nullable: true)]
     private $isSpecialOffer = false;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $image;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: RelatedProduct::class)]
@@ -60,7 +60,7 @@ class Product
     #[ORM\Column(type: 'text', nullable: true)]
     private $tags;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $slug;
 
     public function __construct()

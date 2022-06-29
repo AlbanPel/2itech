@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Repository\ProductRepository;
+use App\Service\MessageGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -10,7 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class HomeController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(ProductRepository $productRepository): Response
+    public function index(ProductRepository $productRepository, MessageGenerator $messageGenerator): Response
     {
         $products = $productRepository->findAll();
 
@@ -21,6 +22,9 @@ class HomeController extends AbstractController
         $productNewArrival = $productRepository->findByIsNewArrival(1);
 
         $productFeatured = $productRepository->findByIsFeatured(1);
+
+        $message = $messageGenerator->getAdvertisingMessage();
+        $this->addFlash('success', $message);
         
         // dd([$products, $productBestSeller, $productSpecialOffert, $productNewArrival, $productFeatured]);
 

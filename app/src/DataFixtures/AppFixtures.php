@@ -23,7 +23,7 @@ class AppFixtures extends Fixture
         //users
         $user = new User();
         $user->setEmail('alban@pelissier.dev');
-        $user->setRoles(['user']);
+        $user->setRoles(['ROLE_USER']);
         $user->setIsVerified(true);
         $password = $this->hasher->hashPassword($user, 'test1234');
         $user->setPassword($password);
@@ -37,7 +37,7 @@ class AppFixtures extends Fixture
         //admin
         $user = new User();
         $user->setEmail('alban+admin@pelissier.dev');
-        $user->setRoles(['admin']);
+        $user->setRoles(['ROLE_ADMIN']);
         $user->setIsVerified(true);
         $password = $this->hasher->hashPassword($user, 'test1234');
         $user->setPassword($password);

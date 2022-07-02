@@ -2,10 +2,11 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Contact;
 use App\Entity\Product;
 use App\Entity\Categories;
 use Symfony\Component\HttpFoundation\Response;
-use App\Controller\Admin\ProductCrudController;
+use App\Controller\ContactController;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
@@ -47,5 +48,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Product', 'fas fa-shopping-cart', Product::class);
         yield MenuItem::linkToCrud('Catégories', 'fas fa-list', Categories::class);
+        yield MenuItem::LinkToCrud('Contact', 'fa fa-send', Contact::class);
     }
 }

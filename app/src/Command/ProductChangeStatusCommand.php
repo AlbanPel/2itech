@@ -43,7 +43,7 @@ class ProductChangeStatusCommand extends Command
         if ($input->getOption('check')) {
             $products = $this->manager->getRepository(Product::class)->findAll();
             $productCount = count($products);
-            $io->writeln('<info>-------------------------</info>');
+            $io->writeln('<error>-------------------------</error>');
             $io->writeln('<info>'.$productCount.' Produits dans la base de données! </info>');
             $io->writeln('<info>-------------------------</info>');
         }

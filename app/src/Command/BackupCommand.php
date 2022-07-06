@@ -60,7 +60,7 @@ class BackupCommand extends Command
                     array_push($objet, $row);
 
                 }
-                $directory = $this->projectDir.'/src/backup/';
+                $directory = $this->projectDir.'/src/Backup/';
                 $path= $directory.'products.json';
                 $content = json_encode($objet, JSON_PRETTY_PRINT);
                 $filesystem = new Filesystem();

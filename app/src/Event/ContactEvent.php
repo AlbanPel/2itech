@@ -9,7 +9,7 @@ class ContactEvent extends Event
 {
     public function __construct(Contact $contact)
     {
-        $this->contact =$contact;
+        $this->contact = $contact;
     }
 
     public function getContact(): contact
